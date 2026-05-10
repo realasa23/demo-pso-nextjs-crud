@@ -7,12 +7,20 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    
+    # Ini WAJIB ditambahin kalau pakai WIF (tanpa JSON)
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
     steps:
     - uses: actions/checkout@v4
 
+    # Bagian ini yang diubah pakai 2 kode rahasia dari terminal tadi
     - uses: google-github-actions/auth@v2
       with:
-        credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+        workload_identity_provider: 'projects/418975844073/locations/global/workloadIdentityPools/github-pool/providers/github-provider'
+        service_account: 'github-ac@project-aa571cb2-7559-4fff-9f6.iam.gserviceaccount.com'
 
     - uses: google-github-actions/setup-gcloud@v2
 
